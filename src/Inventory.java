@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,10 +48,21 @@ public class Inventory
         this.map.get(name).incrPrice(price);
     }
 
+    public void writeInAFile() throws IOException {
+        FileWriter out = new FileWriter("C:\\Users\\Patrick\\Desktop\\test\\inventory.txt");
+        out.write(String.format("%10s %20s %20s %15s\r\n", "Product Name", "Product price","Product Quantity","Total Cost"));
+        for (Product prdct: this.map.values())
+        {
+            out.write(String.format("%10s %20s %20s %15s\r\n",prdct.getName(),prdct.getPrice(),prdct.getQuant(),prdct.getNetPrice()));
+        }
+        out.close();
+        System.out.println("All Products have been Saved.");
+    }
+
     public void showInventory()
     {
         System.out.println("-----------------------------------------------------------------------------");
-        System.out.printf("%10s %25s %20s %15s", "Product Name:", "Product price:", "Product Quantity:", "Total Cost:");
+        System.out.printf("%10s %25s %20s %15s", "Product Name", "Product price", "Product Quantity", "Total Cost");
         System.out.println();
         System.out.println("-----------------------------------------------------------------------------");
         for (Product prdct: this.map.values())
@@ -58,5 +72,6 @@ public class Inventory
         }
         System.out.println("-----------------------------------------------------------------------------");
     }
+
 
 }
