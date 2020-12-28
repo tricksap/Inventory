@@ -1,6 +1,7 @@
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main
@@ -9,75 +10,88 @@ public class Main
         Scanner in = new Scanner(System.in);
         int choice = 0;
 
-        Product prdct[] = new Product[10];
+        List<Product> Products = new ArrayList<Product>();
+        Product newPrdct;
         Inventory inventory = new Inventory();
-        int i = 0;
-        String name;
+
         while (choice != 8) {
             System.out.println();
             System.out.print("1.Enter new Product\n2.Decrease Quantity\n3.Increase Quantity\n4.Remove Product\n5.Show Inventory\n6.Write in a File\n7.Read a stored File\n8.Quit\nChoice: ");
             choice = in.nextInt();
             System.out.println();
+            switch(choice)
+            {
+                case 1:
+                    newPrdct = new Product();
+                    Products.add(newPrdct);
+                    System.out.print("enter name product:");
+                    String name = in.next();
+                    newPrdct.setName(name);
 
-            if (choice == 1) {
-                prdct[i] = new Product();
-                System.out.print("enter name product:");
-                name = in.next();
-                prdct[i].setName(name);
+                    System.out.print("enter Price:");
+                    double price = in.nextDouble();
+                    newPrdct.setPrice(price);
 
-                System.out.print("enter Price:");
-                double price = in.nextDouble();
-                prdct[i].setPrice(price);
+                    System.out.print("Enter Quantity:");
+                    int quant = in.nextInt();
+                    newPrdct.setQuant(quant);
+                    inventory.addProduct(newPrdct);
+                    break;
 
-                System.out.print("Enter Quantity:");
-                int quant = in.nextInt();
-                prdct[i].setQuant(quant);
-                inventory.addProduct(prdct[i]);
-                i++;
-            }
-            if (choice == 2) {
-                System.out.print("Name of the product: ");
-                name = in.next();
-                System.out.print("Quantity: ");
-                int quant1 = in.nextInt();
-                inventory.decrQntyPrdct(name, quant1);
-            }
+                case 2:
+                    System.out.print("Name of the product: ");
+                    name = in.next();
+                    System.out.print("Quantity: ");
+                    int quantDec = in.nextInt();
+                    inventory.decrQntyPrdct(name, quantDec);
+                    break;
 
-            if (choice == 3) {
-                System.out.print("Name of the product: ");
-                name = in.next();
-                System.out.print("Quantity: ");
-                int quant1 = in.nextInt();
-                inventory.incrQntyPrdct(name, quant1);
-            }
+                case 3:
+                    System.out.print("Name of the product: ");
+                    name = in.next();
+                    System.out.print("Quantity: ");
+                    int quantInc = in.nextInt();
+                    inventory.incrQntyPrdct(name, quantInc);
+                    break;
 
-            if (choice == 4) {
-                System.out.print("Name of the product you want to remove: ");
-                name = in.next();
-                inventory.removeProduct(name);
-            }
-            if (choice == 5) {
-                inventory.showInventory();
-            }
-            if (choice == 6) {
-                inventory.writeInAFile();
-            }
+                case 4:
+                    System.out.print("Name of the product you want to remove: ");
+                    name = in.next();
+                    inventory.removeProduct(name);
+                    break;
 
-            if (choice == 7) {
-                Scanner reader = new Scanner(new FileReader("C:\\Users\\Patrick\\Desktop\\test\\inventory.txt"));
-                reader.nextLine(); // this will read the first line
-                while (reader.hasNext()) {
-                    prdct[i] = new Product();
-                    prdct[i].setName(reader.next());
+                case 5:
+                    inventory.showInventory();
+                    break;
 
-                    prdct[i].setPrice(Double.parseDouble(reader.next()));
-                    prdct[i].setQuant(Integer.parseInt(reader.next()));
-                    reader.next();//read the last element (total cost)
+                case 6:
+                    inventory.writeInAFile();
+                    break;
 
-                    inventory.addProduct(prdct[i]);
-                    i++;
-                    System.out.println("Transfer Done");
-                }
+                case 7:
+                    Scanner reader = new Scanner(new FileReader("C:\\Users\\Patrick\\Desktop\\test\\inventory.txt"));
+                    reader.nextLine(); // this will read the first line
+                    while (reader.hasNext()) {
+                        newPrdct = new Product();
+                        Products.add(newPrdct);
+                        newPrdct.setName(reader.next());
+
+                        newPrdct.setPrice(Double.parseDouble(reader.next()));
+                        newPrdct.setQuant(Integer.parseInt(reader.next()));
+                        reader.next();//read the last element (total cost)
+
+                        inventory.addProduct(newPrdct);
+                    }
+                        System.out.println("Transfer Done");
+                    break;
+
+                case 8:
+                    System.out.println("Thankyou!!");
+                    break;
+
+                default:
+                    System.out.println("Invalid Input");
+                    break;
             }
         }
     }
